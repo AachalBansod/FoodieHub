@@ -1,0 +1,27 @@
+{
+  "name": "foodiehub",
+  "version": "1.0.0",
+  "description": "Food delivery App",
+  "homepage": "https://github.com/AniketBansod/FoodieHub#readme",
+  "bugs": {
+    "url": "https://github.com/AniketBansod/FoodieHub/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AniketBansod/FoodieHub.git"
+  },
+  "license": "ISC",
+  "author": "Aniket Bansod",
+  "type": "commonjs",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "parcel": "^2.13.3",
+    "process": "^0.11.10"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}
