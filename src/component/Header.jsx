@@ -1,7 +1,8 @@
 import logo from "../../Assets/logo.png";
+import { useState } from "react";
 
 const Title=()=>{
-    return(
+    return( 
        <a  href="/">
         <img 
         className="logo"
@@ -11,6 +12,7 @@ const Title=()=>{
     );
   };
 const HeaderComponent=()=>{
+    const [LoggedInUser,setLoggedInUser] = useState(false);
     return(
       <div className="Header">
         <Title/>
@@ -22,7 +24,11 @@ const HeaderComponent=()=>{
             <li>Cart</li>
           </ul>
         </div>
-      </div>
+        {LoggedInUser ?  (
+          <button onClick={()=> setLoggedInUser(false)}>Logout</button>
+        ) : (
+        <button onClick= {()=> setLoggedInUser(true)}>Login</button>)}  
+      </div> 
     );
   };
 export default HeaderComponent;
