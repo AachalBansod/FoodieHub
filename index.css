@@ -20,7 +20,7 @@
 }
 .card{
     width : 15rem;
-    height:24rem;
+    height:20rem;
     border:1px solid black;
     padding: 0.5rem;
     margin: 0.8rem ;
@@ -32,4 +32,10 @@
 .restaurant-list{
     display:flex;
     flex-wrap:wrap;
+}
+.Shimmer-card{
+    width : 15rem;
+    height:20rem;
+    margin: 0.8rem ;
+    background: lightgray;
 }

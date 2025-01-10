@@ -1,5 +1,6 @@
-import logo from "../../Assets/logo.png";
+import logo from "../Assets/logo.png"; 
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Title=()=>{
     return( 
@@ -18,9 +19,15 @@ const HeaderComponent=()=>{
         <Title/>
         <div className="nav-items">
           <ul>
+            <Link>
             <li>Home</li>
+            </Link>
+            <Link to="/about">
             <li>About</li>
+            </Link>
+            <Link to="/contact">
             <li>Contact</li>
+            </Link>
             <li>Cart</li>
           </ul>
         </div>
