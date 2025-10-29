@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <footer className="mt-10 border-t border-orange-100 bg-white">
+    <footer className="mt-6 border-t border-orange-100 bg-white">
       <div className="max-w-6xl mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-slate-600">
         <p>
           © {new Date().getFullYear()} FoodieHub · Built with React, Express &

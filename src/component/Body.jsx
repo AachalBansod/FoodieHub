@@ -23,7 +23,7 @@ const Body = () => {
 
   useEffect(() => {
     getRestaurants();
-    if (API_BASE_URL && isLoggedIn()) {
+    if (isLoggedIn()) {
       (async () => {
         const data = await fetchFavorites();
         const ids = new Set(
@@ -36,13 +36,15 @@ const Body = () => {
 
   async function getRestaurants() {
     let json = null;
-    if (API_BASE_URL) {
-      const url = `${API_BASE_URL}/api/restaurants?lat=${encodeURIComponent(
+    // Try backend (same-origin or configured base) first
+    {
+      const base = API_BASE_URL || "";
+      const url = `${base}/api/restaurants?lat=${encodeURIComponent(
         LATITUDE
       )}&lng=${encodeURIComponent(LONGITUDE)}`;
       json = await safeFetchJson(url);
     }
-    if (!json) {
+    if (!json && process.env.NODE_ENV !== "production") {
       // Swiggy home/list API (legacy) fallback for local dev without backend
       const baseUrl = `https://www.swiggy.com/dapi/restaurants/list/v5?lat=${encodeURIComponent(
         LATITUDE
@@ -176,7 +178,6 @@ const Body = () => {
               restaurantData={restaurant}
               isFavorite={favoriteIds.has(String(restaurant.info.id))}
               onToggleFavorite={async (data) => {
-                if (!API_BASE_URL) return; // backend required for persistence
                 if (!isLoggedIn()) {
                   const next = `${location.pathname}${location.search}`;
                   navigate(`/login?next=${encodeURIComponent(next)}`);
@@ -195,6 +196,7 @@ const Body = () => {
                   await addFavorite(id, {
                     name: data?.info?.name,
                     cuisines: data?.info?.cuisines,
+                    cloudinaryImageId: data?.info?.cloudinaryImageId,
                   });
                 }
               }}

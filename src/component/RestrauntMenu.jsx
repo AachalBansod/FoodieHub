@@ -38,13 +38,22 @@ const RestrauntMenu = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const rupees = (p) => (p ? Math.round(p / 100) : 0);
+
   const addFoodItems = (item) => {
     if (!isLoggedIn()) {
       const next = `${location.pathname}${location.search}`;
       navigate(`/login?next=${encodeURIComponent(next)}`);
       return;
     }
-    dispatch(addItem(item));
+    const info = item?.card?.info || item || {};
+    const payload = {
+      id: String(info.id),
+      name: info.name,
+      price: rupees(info.price || info.defaultPrice),
+      imageId: info.imageId,
+    };
+    dispatch(addItem(payload));
   };
 
   const Restaurant = useRestaurant(id);
@@ -100,7 +109,7 @@ const RestrauntMenu = () => {
     recommendedMenu = firstSection?.card?.card?.itemCards || [];
   }
 
-  const rupees = (p) => (p ? Math.round(p / 100) : 0);
+  // moved rupees above for reuse
   const truncate = (s = "", max = 140) =>
     s.length > max ? s.slice(0, max - 1) + "…" : s;
 

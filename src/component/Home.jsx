@@ -1,6 +1,14 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const Home = () => {
+  const icons = ["🍔", "🍕", "🍣", "🥗", "🧁", "🌮"];
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setI((x) => (x + 1) % icons.length), 1800);
+    return () => clearInterval(t);
+  }, []);
+
   return (
     <section className="bg-gradient-to-b from-orange-50 to-[#FFF8E1]">
       <div className="max-w-6xl mx-auto px-4 py-16 grid md:grid-cols-2 gap-10 items-center">
@@ -28,8 +36,15 @@ const Home = () => {
           </div>
         </div>
         <div className="flex justify-center">
-          <div className="h-72 w-72 sm:h-96 sm:w-96 rounded-2xl bg-white shadow-xl border border-orange-100 flex items-center justify-center">
-            <span className="text-7xl">🍔</span>
+          <div className="relative h-72 w-72 sm:h-96 sm:w-96 rounded-2xl bg-white shadow-xl border border-orange-100 flex items-center justify-center overflow-hidden">
+            <span
+              key={i}
+              className="text-7xl transition-transform duration-500 ease-out animate-pulse"
+              style={{ transform: "scale(1)" }}
+            >
+              {icons[i]}
+            </span>
+            <div className="absolute -bottom-6 left-0 right-0 h-12 bg-gradient-to-t from-orange-50/60 to-transparent" />
           </div>
         </div>
       </div>

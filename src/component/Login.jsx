@@ -41,7 +41,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-[60vh] flex items-center justify-center bg-gradient-to-b from-white to-orange-50 py-10">
+    <div className="min-h-[50vh] flex items-center justify-center bg-gradient-to-b from-white to-orange-50 py-10">
       <form
         onSubmit={onSubmit}
         className="w-full max-w-md bg-white p-6 rounded-xl shadow-md border border-orange-100"

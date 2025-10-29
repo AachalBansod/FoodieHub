@@ -14,13 +14,14 @@ const useRestaurant = (id) => {
       if (!id) return;
 
       let json = null;
-      if (API_BASE_URL) {
-         const url = `${API_BASE_URL}/api/restaurants/${encodeURIComponent(id)}?lat=${encodeURIComponent(
+      {
+         const base = API_BASE_URL || "";
+         const url = `${base}/api/restaurants/${encodeURIComponent(id)}?lat=${encodeURIComponent(
             LATITUDE
          )}&lng=${encodeURIComponent(LONGITUDE)}`;
          json = await fetchJsonWithFallback(url);
       }
-      if (!json) {
+      if (!json && process.env.NODE_ENV !== "production") {
          // New Swiggy menu API (mapi) fallback for local dev w/o backend
          const baseUrl =
             "https://www.swiggy.com/mapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=" +

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchFavorites } from "../utils/favorites";
+import { fetchFavorites, removeFavorite } from "../utils/favorites";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import RestrauntCard from "./RestrauntCard";
 import { CardSkeleton } from "./Skeletons";
@@ -36,7 +36,7 @@ const Favorites = () => {
 
   if (!items.length) {
     return (
-      <div className="p-10 text-center bg-[#FFF8E1]">
+      <div className="p-10 text-center bg-[#FFF8E1] min-h-[50vh] flex items-center justify-center flex-col">
         <p className="text-lg text-slate-700">No favorites yet.</p>
         <Link
           to="/restaurants"
@@ -62,6 +62,19 @@ const Favorites = () => {
               },
             }}
             isFavorite={true}
+            onToggleFavorite={async () => {
+              // Optimistically remove from UI then sync server
+              setItems((prev) =>
+                prev.filter((x) => x.restaurantId !== it.restaurantId)
+              );
+              try {
+                await removeFavorite(it.restaurantId);
+              } catch {
+                // On error, refetch to reconcile
+                const data = await fetchFavorites();
+                setItems(data.items || []);
+              }
+            }}
           />
         </Link>
       ))}

@@ -6,6 +6,9 @@ import { clearAuth, getUser, isLoggedIn, onAuthChange } from "../utils/auth";
 
 const HeaderComponent = () => {
   const cartItems = useSelector((store) => store.cart.items);
+  const cartCount = useSelector((store) =>
+    store.cart.items.reduce((sum, it) => sum + (it.quantity || 1), 0)
+  );
   const navigate = useNavigate();
   const [authed, setAuthed] = useState(isLoggedIn());
   const [user, setUser] = useState(getUser());
@@ -37,6 +40,12 @@ const HeaderComponent = () => {
             <Link to="/favorites" className="hover:text-orange-600">
               Favorites
             </Link>
+            <Link
+              to="/orders"
+              className="hover:text-orange-600 flex items-center gap-1"
+            >
+              <span>Orders</span>
+            </Link>
             <Link to="/about" className="hover:text-orange-600">
               About
             </Link>
@@ -50,7 +59,7 @@ const HeaderComponent = () => {
               to="/cart"
               className="px-3 py-1.5 rounded-md border border-orange-300 text-orange-700 hover:bg-orange-50"
             >
-              Cart {cartItems.length ? `(${cartItems.length})` : ""}
+              Cart {cartCount ? `(${cartCount})` : ""}
             </Link>
             {authed ? (
               <>

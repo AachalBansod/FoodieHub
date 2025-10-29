@@ -16,16 +16,18 @@ import Favorites from "./component/Favorites";
 import Home from "./component/Home";
 import Login from "./component/Login";
 import Signup from "./component/Signup";
-const AppLayout=() =>{
-
-  return(
+import Orders from "./component/Orders";
+const AppLayout = () => {
+  return (
     <Provider store={store}>
-    <>
-     <HeaderComponent/>
-     <Outlet></Outlet>
-     <Footer/>
-     </>
-     </Provider>
+      <div className="min-h-screen flex flex-col">
+        <HeaderComponent />
+        <main className="flex-1">
+          <Outlet />
+        </main>
+        <Footer />
+      </div>
+    </Provider>
   );
 };
 
@@ -66,6 +68,13 @@ const appRouter = createBrowserRouter([
         path:"/favorites",
         element:(
           <Favorites />
+        )
+       }
+       ,
+       {
+        path:"/orders",
+        element:(
+          <Orders />
         )
        }
        ,

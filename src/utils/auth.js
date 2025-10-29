@@ -52,7 +52,8 @@ export function onAuthChange(cb) {
 }
 
 export async function apiFetch(path, { method = "GET", headers = {}, body } = {}) {
-  const url = path.startsWith("http") ? path : `${API_BASE_URL}${path}`;
+  const base = API_BASE_URL || ""; // allow same-origin when empty
+  const url = path.startsWith("http") ? path : `${base}${path}`;
   const token = getToken();
   const res = await fetch(url, {
     method,
