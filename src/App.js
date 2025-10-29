@@ -1,4 +1,4 @@
-import React,{lazy, Suspense} from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import '../index.css';
 import HeaderComponent from "./component/Header"
@@ -7,13 +7,15 @@ import Footer from "./component/Footer";
 import About from "./component/About";
 import {createBrowserRouter, Outlet, RouterProvider} from "react-router-dom";
 import  Error from "./component/Error";
-import Contact from "./component/contact";
+import Contact from "./component/Contact";
 import RestrauntMenu from "./component/RestrauntMenu";
 import {Provider} from "react-redux";
 import store from "./utils/store";
 import Cart from "./component/Cart";
-
-const Instamart = lazy(()=>import("./component/Instamart"));
+import Favorites from "./component/Favorites";
+import Home from "./component/Home";
+import Login from "./component/Login";
+import Signup from "./component/Signup";
 const AppLayout=() =>{
 
   return(
@@ -35,6 +37,10 @@ const appRouter = createBrowserRouter([
     children:[
       {
         path : "/",
+        element:<Home/>,
+       },
+       {
+        path : "/restaurants",
         element:<Body/>,
        },
        {
@@ -50,16 +56,30 @@ const appRouter = createBrowserRouter([
         element:<RestrauntMenu></RestrauntMenu>
        },
        {
-        path:"/instamart",
-        element: (
-          <Suspense>
-            <Instamart/>
-            </Suspense>)
-       },
-       {
         path:"/cart",
         element:(
           <Cart></Cart>
+        )
+       }
+       ,
+       {
+        path:"/favorites",
+        element:(
+          <Favorites />
+        )
+       }
+       ,
+       {
+        path:"/login",
+        element:(
+          <Login />
+        )
+       }
+       ,
+       {
+        path:"/signup",
+        element:(
+          <Signup />
         )
        }
 

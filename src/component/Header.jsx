@@ -1,51 +1,92 @@
-import logo from "../Assets/logo.png"; 
-import { useState } from "react";
+import logo from "../Assets/logo.png";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { clearAuth, getUser, isLoggedIn, onAuthChange } from "../utils/auth";
 
+const HeaderComponent = () => {
+  const cartItems = useSelector((store) => store.cart.items);
+  const navigate = useNavigate();
+  const [authed, setAuthed] = useState(isLoggedIn());
+  const [user, setUser] = useState(getUser());
 
-const Title=()=>{
-    return( 
-       <a  href="/">
-        <img 
-        className="h-20 p-2"
-        alt="Logo" 
-        src= {logo}/>
-        </a>
-    );
-  };
-const HeaderComponent=()=>{
-    const [LoggedInUser,setLoggedInUser] = useState(false);
-    const cartItems = useSelector(store=>store.cart.items) ;
- 
-    console.log(cartItems);
-    return(
-      <div className="flex justify-between bg-orange-500 shadow-lg text-white text-base font-semibold">
-        <Title/>
-        <div className="nav-items">
-          <ul className="flex py-8 ">
-            <Link to="/">
-            <li className="px-2">Home</li>
+  useEffect(() => {
+    const unsub = onAuthChange(() => {
+      setAuthed(isLoggedIn());
+      setUser(getUser());
+    });
+    return unsub;
+  }, []);
+
+  return (
+    <header className="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-orange-100">
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          <Link to="/" className="flex items-center gap-2">
+            <img className="h-10 w-10" alt="Logo" src={logo} />
+            <span className="text-xl font-bold text-slate-900">FoodieHub</span>
+          </Link>
+
+          <nav className="hidden md:flex items-center gap-5 text-slate-700 font-medium">
+            <Link to="/" className="hover:text-orange-600">
+              Home
             </Link>
-            <Link to="/about">
-            <li className="px-2">About</li>
+            <Link to="/restaurants" className="hover:text-orange-600">
+              Restaurants
             </Link>
-            <Link to="/contact">
-            <li className="px-2">Contact</li>
+            <Link to="/favorites" className="hover:text-orange-600">
+              Favorites
             </Link>
-            <Link to="/instamart">
-            <li className="px-2">Instamart</li>
+            <Link to="/about" className="hover:text-orange-600">
+              About
             </Link>
-            <Link to="/cart">
-            <li className="px-2">Cart-{ cartItems.length} items</li>
+            <Link to="/contact" className="hover:text-orange-600">
+              Contact
             </Link>
-          </ul>
+          </nav>
+
+          <div className="flex items-center gap-3">
+            <Link
+              to="/cart"
+              className="px-3 py-1.5 rounded-md border border-orange-300 text-orange-700 hover:bg-orange-50"
+            >
+              Cart {cartItems.length ? `(${cartItems.length})` : ""}
+            </Link>
+            {authed ? (
+              <>
+                <span className="text-slate-700">
+                  {user?.name || user?.email}
+                </span>
+                <button
+                  onClick={() => {
+                    clearAuth();
+                    navigate("/");
+                  }}
+                  className="px-3 py-1.5 rounded-md text-slate-700 hover:text-orange-700"
+                >
+                  Log out
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="px-3 py-1.5 rounded-md text-slate-700 hover:text-orange-700"
+                >
+                  Log in
+                </Link>
+                <Link
+                  to="/signup"
+                  className="px-3 py-1.5 rounded-md bg-orange-600 text-white hover:bg-orange-500"
+                >
+                  Sign up
+                </Link>
+              </>
+            )}
+          </div>
         </div>
-        {LoggedInUser ?  (
-          <button onClick={()=> setLoggedInUser(false)}>Logout</button>
-        ) : (
-        <button onClick= {()=> setLoggedInUser(true)}>Login</button>)}  
-      </div> 
-    );
-  };
+      </div>
+    </header>
+  );
+};
 export default HeaderComponent;
